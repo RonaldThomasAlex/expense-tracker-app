@@ -33,6 +33,24 @@ const DUMMY_EXPENSES = [
     description: "A tech course",
     amount: 24.99,
     date: new Date("2023-12-13")
+  },
+  {
+    id: "e6",
+    description: "Some bananas",
+    amount: 6.99,
+    date: new Date("2022-05-19")
+  },
+  {
+    id: "e7",
+    description: "A book",
+    amount: 14.99,
+    date: new Date("2022-02-11")
+  },
+  {
+    id: "e8",
+    description: "A tech course",
+    amount: 24.99,
+    date: new Date("2023-12-13")
   }
 ];
 
@@ -51,7 +69,9 @@ export default ExpensesOutput;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 0,
     backgroundColor: GlobalStyles.colors.primary700
   }
 });
