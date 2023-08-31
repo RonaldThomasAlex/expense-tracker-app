@@ -10,6 +10,7 @@ const AllExpenses = () => {
     <ExpensesOutput
       expenses={expensesContext.expenses}
       expensesPeriod="Last 7 days"
+      fallbackText="No registered expense found!"
     />
   );
 };
