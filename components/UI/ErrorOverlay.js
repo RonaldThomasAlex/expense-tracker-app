@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import { GlobalStyles } from "../../constants/styles";
 
 const ErrorOverlay = ({ message, onConfirm }) => {
@@ -7,6 +7,8 @@ const ErrorOverlay = ({ message, onConfirm }) => {
       <Text style={[styles.text, styles.title]}>An error occurred!</Text>
 
       <Text style={styles.text}>{message}</Text>
+
+      <Button onPress={onConfirm} title="Okay" />
     </View>
   );
 };
