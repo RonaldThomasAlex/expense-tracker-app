@@ -4,6 +4,7 @@ import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 
 import IconButton from "../components/UI/IconButton";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 
 import { GlobalStyles } from "../constants/styles";
 
@@ -12,6 +13,8 @@ import { deleteExpense, storeExpense, updateExpense } from "../utils/http";
 
 const ManageExpenses = ({ route, navigation }) => {
   const [isFetching, setIsFetching] = useState(false);
+  const [error, setError] = useState("");
+
   const expensesContext = useContext(ExpensesContext);
 
   const expenseId = route.params?.expenseId;
@@ -34,31 +37,47 @@ const ManageExpenses = ({ route, navigation }) => {
   async function deleteExpenseHandler() {
     setIsFetching(true);
 
-    await deleteExpense(expenseId);
+    try {
+      await deleteExpense(expenseId);
 
-    setIsFetching(false);
+      expensesContext.deleteExpense(expenseId);
 
-    expensesContext.deleteExpense(expenseId);
+      navigation.goBack();
+    } catch (err) {
+      setError("Could not delete. Please try again later");
 
-    navigation.goBack();
+      setIsFetching(false);
+    }
   }
 
   async function confirmHandler(expenseData) {
     setIsFetching(true);
 
-    if (isEditing) {
-      expensesContext.updateExpense(expenseId, expenseData);
+    try {
+      if (isEditing) {
+        expensesContext.updateExpense(expenseId, expenseData);
 
-      await updateExpense(expenseId, expenseData);
-    } else {
-      const id = await storeExpense(expenseData);
+        await updateExpense(expenseId, expenseData);
+      } else {
+        const id = await storeExpense(expenseData);
 
-      expensesContext.addExpense({ ...expenseData, id: id });
+        expensesContext.addExpense({ ...expenseData, id: id });
+      }
+
+      navigation.goBack();
+    } catch (err) {
+      setError("Could not save date. Please try again later");
+
+      setIsFetching(false);
     }
+  }
 
-    setIsFetching(false);
+  function errorHandler() {
+    setError(null);
+  }
 
-    navigation.goBack();
+  if (error && !isFetching) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />;
   }
 
   if (isFetching) {
