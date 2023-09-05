@@ -5,6 +5,7 @@ import Input from "./Input";
 import Button from "../../components/UI/Button";
 
 import { getFormattedDate } from "../../utils/date";
+import { GlobalStyles } from "../../constants/styles";
 
 const ExpenseForm = ({
   submitButtonLabel,
@@ -44,6 +45,7 @@ const ExpenseForm = ({
     };
 
     const amountIsValid = !isNaN(expenseData.amount) || expenseData.amount > 0;
+    console.log("amountIsValid", amountIsValid);
     const dateIsValid = expenseData.date.toString() !== "Invalid Date";
     const descriptionIsValid = expenseData.description.trim().length > 0;
 
@@ -84,6 +86,7 @@ const ExpenseForm = ({
         <Input
           style={styles.rowInput}
           label="Amount"
+          invalid={!inputs.amount.isValid}
           textInputConfig={{
             keyboardType: "decimal-pad",
             onChangeText: inputChangeHandler.bind(this, "amount"),
@@ -94,6 +97,7 @@ const ExpenseForm = ({
         <Input
           style={styles.rowInput}
           label="Date"
+          invalid={!inputs.date.isValid}
           textInputConfig={{
             placeholder: "YYYY-MM-DD",
             maxLength: 10,
@@ -105,6 +109,7 @@ const ExpenseForm = ({
 
       <Input
         label="Description"
+        invalid={!inputs.description.isValid}
         textInputConfig={{
           multiline: true,
           onChangeText: inputChangeHandler.bind(this, "description"),
@@ -113,7 +118,9 @@ const ExpenseForm = ({
       />
 
       {formIsInValid && (
-        <Text>Invalid input values - please check your entered data</Text>
+        <Text style={styles.errorText}>
+          Invalid input values - please check your entered data
+        </Text>
       )}
 
       <View style={styles.buttons}>
@@ -157,5 +164,10 @@ const styles = StyleSheet.create({
   button: {
     minWidth: 120,
     marginHorizontal: 8
+  },
+  errorText: {
+    textAlign: "center",
+    color: GlobalStyles.colors.error500,
+    margin: 8
   }
 });
