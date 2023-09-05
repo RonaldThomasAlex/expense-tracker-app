@@ -6,6 +6,7 @@ import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/styles";
 
 import { ExpensesContext } from "../store/expenses-context";
+import { storeExpense } from "../utils/http";
 
 const ManageExpenses = ({ route, navigation }) => {
   const expensesContext = useContext(ExpensesContext);
@@ -35,6 +36,7 @@ const ManageExpenses = ({ route, navigation }) => {
     if (isEditing) {
       expensesContext.updateExpense(expenseId, expenseData);
     } else {
+      storeExpense(expenseData);
       expensesContext.addExpense(expenseData);
     }
 
